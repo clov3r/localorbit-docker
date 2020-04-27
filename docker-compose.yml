@@ -1,0 +1,23 @@
+version: '2'
+services:
+  db:
+    image: postgres:9.4.1
+    ports:
+      - "5432:5432"
+
+  persistent:
+    image: busybox
+    volumes:
+      - /persistent
+
+  web:
+    build: .
+    command: /localorbit/start
+    ports:
+      - "3000:3000"
+    links:
+      - db
+    volumes:
+      - ./rails:/localorbit
+    volumes_from:
+    - persistent
